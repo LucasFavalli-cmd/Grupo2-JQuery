@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>jQuery Lab</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 90px;
+      }
+
+      body {
+        font-family: "Inter", Arial, sans-serif;
+        background:
+          radial-gradient(ellipse at top left, #0b4776, transparent 35%),
+          #031727;
+        color: #f1f8ff;
+        line-height: 1.6;
+      }
+
+      :root {
+        --azul: #68bdff;
+        --azul-claro: #b4e1ff;
+        --fundo: #031727;
+        --card: #08243b;
+        --texto: #b7cadb;
+        --borda: rgba(126, 197, 255, 0.2);
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(1100px, calc(100% - 36px));
+        margin: auto;
+      }
+
+      /* MENU */
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(3, 23, 39, 0.95);
+        border-bottom: 1px solid var(--borda);
+        backdrop-filter: blur(12px);
+      }
+
+      nav {
+        min-height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding: 12px 0;
+      }
+
+      .logo {
+        font-size: 21px;
+        font-weight: 800;
+      }
+
+      .logo span {
+        color: var(--azul);
+      }
+
+      .links {
+        display: flex;
+        gap: 17px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        color: var(--texto);
+      }
+
+      .links a:hover {
+        color: var(--azul);
+      }
+
+      /* CAPA */
+
+      .hero {
+        min-height: 410px;
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 40px;
+        align-items: center;
+        padding-top: 60px;
+        padding-bottom: 60px;
+      }
+
+      .etiqueta {
+        display: inline-block;
+        border: 1px solid var(--borda);
+        border-radius: 30px;
+        padding: 7px 12px;
+        color: var(--azul-claro);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: clamp(40px, 6vw, 65px);
+        line-height: 1.05;
+        letter-spacing: -3px;
+        margin-bottom: 20px;
+      }
+
+      h1 span,
+      .titulo-azul {
+        color: var(--azul);
+        text-shadow: 0 0 24px rgba(81, 176, 255, 0.3);
+      }
+
+      .hero p {
+        max-width: 550px;
+        color: var(--texto);
+        font-size: 14px;
+      }
+
+      .hero-visual {
+        min-height: 270px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 18px;
+        border: 1px solid var(--borda);
+        border-radius: 22px;
+        background:
+          radial-gradient(circle at center, #15548a, transparent 65%), #041726;
+      }
+
+      .robo {
+        font-size: 85px;
+      }
+
+      .terminal {
+        background: #020f1b;
+        border: 1px solid var(--borda);
+        border-radius: 8px;
+        padding: 10px 14px;
+        color: var(--azul-claro);
+        font: 12px monospace;
+      }
+
+      /* SEÇÕES */
+
+      section {
+        padding: 55px 0;
+        border-top: 1px solid rgba(126, 197, 255, 0.1);
+      }
+
+      .secao-topo {
+        margin-bottom: 28px;
+      }
+
+      .mini-titulo {
+        color: var(--azul);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin-bottom: 9px;
+      }
+
+      h2 {
+        font-size: clamp(25px, 4vw, 35px);
+        line-height: 1.2;
+        letter-spacing: -1px;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .descricao {
+        color: var(--texto);
+        font-size: 13px;
+        max-width: 700px;
+      }
+
+      /* CARDS */
+
+      .grade {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+      }
+
+      .duas-colunas {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 17px;
+      }
+
+      .card {
+        min-width: 0;
+        padding: 22px;
+        border: 1px solid var(--borda);
+        border-radius: 16px;
+        background: linear-gradient(145deg, #0c314f, #051c2e);
+      }
+
+      .card p {
+        color: var(--texto);
+        font-size: 13px;
+      }
+
+      .icone {
+        width: 43px;
+        height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, #c3e9ff, #6bbfff);
+        color: #052039;
+        font-size: 21px;
+      }
+
+      /* BOTÕES */
+
+      .botoes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 15px;
+      }
+
+      .btn {
+        border: 1px solid var(--borda);
+        border-radius: 9px;
+        padding: 10px 14px;
+        background: #0c3554;
+        color: #f1f8ff;
+        font-size: 12px;
+        font-weight: 600;
+        transition: 0.2s;
+      }
+
+      .btn:hover {
+        border-color: var(--azul);
+        box-shadow: 0 0 18px rgba(55, 159, 255, 0.2);
+      }
+
+      .btn-principal {
+        background: linear-gradient(120deg, #b2e3ff, #65baff);
+        color: #041c30;
+        border: none;
+      }
+
+      /* ÁREAS DE TESTE */
+
+      .demonstracao {
+        margin-top: 14px;
+        padding: 16px;
+        border: 1px solid var(--borda);
+        border-radius: 11px;
+        background: rgba(2, 18, 31, 0.65);
+      }
+
+      .caixa-demo {
+        margin-top: 10px;
+        padding: 14px;
+        border: 1px dashed #568ab5;
+        border-radius: 9px;
+        background: #0b2c47;
+        color: #f1f8ff;
+      }
+
+      .resultado {
+        min-height: 22px;
+        margin-top: 12px;
+        color: var(--azul-claro);
+        font-size: 12px;
+      }
+
+      .rotulo {
+        display: block;
+        color: var(--azul);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin-bottom: 9px;
+      }
+
+      /* CÓDIGOS DE EXEMPLO */
+
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        margin-top: 14px;
+        padding: 15px;
+        border: 1px solid rgba(126, 197, 255, 0.14);
+        border-radius: 10px;
+        background: #020f1b;
+        color: #b8e4ff;
+        font:
+          12px/1.8 Consolas,
+          monospace;
+      }
+
+      /* CAMPOS */
+
+      .campo {
+        width: 100%;
+        margin-top: 10px;
+        padding: 11px;
+        outline: none;
+        border: 1px solid #244865;
+        border-radius: 9px;
+        background: #041a2c;
+        color: #f1f8ff;
+      }
+
+      .campo:focus {
+        border-color: var(--azul);
+      }
+
+      label {
+        color: var(--texto);
+        font-size: 12px;
+      }
+
+      /* CLASSES PARA VOCÊ TESTAR NO JQUERY */
+
+      .realce {
+        background: #b7e5ff !important;
+        color: #061a2b !important;
+        border-color: #b7e5ff !important;
+      }
+
+      .estilo-ativo {
+        background: #b7e5ff !important;
+        color: #061a2b !important;
+        border-radius: 20px !important;
+      }
+
+      .pai-selecionado {
+        outline: 2px solid var(--azul);
+        outline-offset: 4px;
+      }
+
+      /* LISTA */
+
+      .lista {
+        display: grid;
+        gap: 8px;
+        list-style: none;
+        margin-top: 14px;
+      }
+
+      .item-lista {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--borda);
+        border-radius: 9px;
+        background: #092d48;
+        font-size: 13px;
+      }
+
+      .remover {
+        padding: 4px 8px;
+        border: 1px solid rgba(255, 120, 140, 0.3);
+        border-radius: 6px;
+        background: transparent;
+        color: #ff9eaa;
+        font-size: 11px;
+      }
+
+      /* ANIMAÇÃO */
+
+      .pista {
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+        height: 60px;
+        margin-top: 15px;
+        border: 1px solid var(--borda);
+        border-radius: 12px;
+        background: #031523;
+      }
+
+      #quadradoAnimado {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #d2efff, #4baaff);
+        box-shadow: 0 0 20px #268bdb;
+      }
+
+      /* RODAPÉ */
+
+      footer {
+        padding: 35px 0;
+        border-top: 1px solid var(--borda);
+        color: var(--texto);
+        text-align: center;
+        font-size: 12px;
+      }
+
+      footer span {
+        color: var(--azul);
+      }
+
+      @media (max-width: 760px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .grade,
+        .duas-colunas {
+          grid-template-columns: 1fr;
+        }
+
+        nav {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .links {
+          gap: 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- MENU -->
+
+    <header>
+      <nav class="container">
+        <a href="#inicio" class="logo">jQuery<span>LAB.</span></a>
+
+        <div class="links">
+          <a href="#conceitos">Conceitos</a>
+          <a href="#seletores">Seletores</a>
+          <a href="#eventos">Eventos</a>
+          <a href="#conteudo">Conteúdo</a>
+          <a href="#estilos">CSS</a>
+          <a href="#efeitos">Efeitos</a>
+          <a href="#dom">DOM</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- CAPA -->
+
+      <div class="container hero" id="inicio">
+        <div>
+          <div class="etiqueta">LABORATÓRIO INTERATIVO</div>
+
+          <h1>EXPLORE O <span>jQuery.</span></h1>
+
+          <p>
+            Descubra como uma biblioteca JavaScript pode facilitar a interação
+            com páginas web. Explore os conceitos, experimente os elementos e
+            crie suas próprias funções.
+          </p>
+
+          <div class="botoes">
+            <a href="#conceitos" class="btn btn-principal">
+              Começar exploração
+            </a>
+
+            <a href="#seletores" class="btn"> Ver demonstrações </a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="robo">🤖</div>
+          <div class="terminal">> laboratório de jQuery</div>
+        </div>
+      </div>
+
+      <!-- SUMÁRIO -->
+
+      <section id="conceitos">
+        <div class="container">
+          <div class="secao-topo">
+            <div class="mini-titulo">01 / SUMÁRIO</div>
+            <h2>O que você vai <span class="titulo-azul">explorar?</span></h2>
+            <p class="descricao">
+              Escolha um assunto e teste os elementos da página usando seu
+              próprio JavaScript com jQuery.
+            </p>
+          </div>
+
+          <div class="grade">
+            <a class="card" href="#seletores">
+              <div class="icone">⌕</div>
+              <h3>Seletores</h3>
+              <p>Encontre elementos HTML usando IDs, classes e tags.</p>
+            </a>
+
+            <a class="card" href="#eventos">
+              <div class="icone">↗</div>
+              <h3>Eventos</h3>
+              <p>Reaja a cliques, movimentos do mouse e digitação.</p>
+            </a>
+
+            <a class="card" href="#conteudo">
+              <div class="icone">✎</div>
+              <h3>Conteúdo</h3>
+              <p>Altere textos, HTML e valores dos campos.</p>
+            </a>
+
+            <a class="card" href="#estilos">
+              <div class="icone">◈</div>
+              <h3>CSS e classes</h3>
+              <p>Modifique cores e aplique classes aos elementos.</p>
+            </a>
+
+            <a class="card" href="#efeitos">
+              <div class="icone">◉</div>
+              <h3>Efeitos</h3>
+              <p>Explore elementos que podem aparecer, sumir e se mover.</p>
+            </a>
+
+            <a class="card" href="#dom">
+              <div class="icone">＋</div>
+              <h3>Manipulação do DOM</h3>
+              <p>Adicione, selecione e remova elementos HTML.</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SELETORES -->
+
+      <section id="seletores">
+        <div class="container">
+          <div class="secao-topo">
+            <div class="mini-titulo">02 / SELETORES</div>
+            <h2>Encontrando elementos <span class="titulo-azul">HTML</span></h2>
+            <p class="descricao">
+              Os seletores permitem escolher os elementos que você quer
+              modificar usando jQuery.
+            </p>
+          </div>
+
+          <div class="duas-colunas">
+            <div class="card">
+              <h3>Área de teste</h3>
+              <p>Use os botões para selecionar os elementos.</p>
+
+              <div class="demonstracao">
+                <p id="selecionarId" class="caixa-demo">
+                  Elemento com ID: selecionarId
+                </p>
+
+                <p class="caixa-demo alvo-classe">
+                  Elemento com classe: alvo-classe
+                </p>
+
+                <p class="caixa-demo alvo-classe">
+                  Outro elemento com a mesma classe
+                </p>
+
+                <p class="caixa-demo alvo-tag">
+                  Elemento para selecionar pela tag
+                </p>
+              </div>
+
+              <div class="botoes">
+                <button type="button" class="btn" id="btnId">
+                  Selecionar por ID
+                </button>
+
+                <button type="button" class="btn" id="btnClasse">
+                  Selecionar por classe
+                </button>
+
+                <button type="button" class="btn" id="btnTag">
+                  Selecionar por tag
+                </button>
+              </div>
+
+              <p class="resultado" id="saidaSeletores">
+                Área para exibir o resultado.
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>O que você pode testar?</h3>
+
+              <div class="demonstracao">
+                <span class="rotulo">ID</span>
+                <p>Use o # para selecionar um elemento pelo ID.</p>
+
+                <span class="rotulo">CLASSE</span>
+                <p>Use o ponto para selecionar elementos por classe.</p>
+
+                <span class="rotulo">TAG</span>
+                <p>Use o nome da tag para selecionar elementos HTML.</p>
+              </div>
+
+              <p class="resultado">
+                IDs: #selecionarId
+                <br />
+                Classes: .alvo-classe
+                <br />
+                Tags: p
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EVENTOS -->
+
+      <section id="eventos">
+        <div class="container">
+          <div class="secao-topo">
+            <div class="mini-titulo">03 / EVENTOS</div>
+            <h2>Faça a página <span class="titulo-azul">reagir</span></h2>
+            <p class="descricao">
+              Eventos permitem executar ações em resposta ao que o usuário faz
+              na página.
+            </p>
+          </div>
+
+          <div class="grade">
+            <div class="card">
+              <div class="icone">↗</div>
+              <h3>Click</h3>
+              <p>Crie um contador de cliques.</p>
+
+              <div class="demonstracao">
+                <p>Cliques: <strong id="contadorClicks">0</strong></p>
+
+                <button
+                  type="button"
+                  class="btn btn-principal"
+                  id="btnContador"
+                >
+                  Clique aqui!
+                </button>
+
+                <button type="button" class="btn" id="btnZerar">Zerar</button>
+              </div>
+
+              <p class="resultado" id="resultadoClick">
+                Resultado dos cliques.
+              </p>
+            </div>
+
+            <div class="card">
+              <div class="icone">⌖</div>
+              <h3>Mouse</h3>
+              <p>Teste os eventos ao entrar e sair de uma área.</p>
+
+              <div class="demonstracao">
+                <div id="areaMouse" class="caixa-demo">Passe o mouse aqui!</div>
+              </div>
+
+              <p class="resultado" id="resultadoMouse">
+                Resultado do movimento do mouse.
+              </p>
+            </div>
+
+            <div class="card">
+              <div class="icone">⌨</div>
+              <h3>Input</h3>
+              <p>Digite e acompanhe o conteúdo do campo.</p>
+
+              <div class="demonstracao">
+                <label for="campoTecla">Seu texto:</label>
+
+                <input
+                  type="text"
+                  class="campo"
+                  id="campoTecla"
+                  placeholder="Digite alguma coisa..."
+                />
+
+                <p class="resultado" id="resultadoTecla">
+                  O texto aparecerá aqui.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MANIPULAÇÃO DE CONTEÚDO -->
+
+      <section id="conteudo">
+        <div class="container">
+          <div class="secao-topo">
+            <div class="mini-titulo">04 / CONTEÚDO</div>
+            <h2>Modificando o <span class="titulo-azul">conteúdo</span></h2>
+            <p class="descricao">
+              Altere textos, insira marcação HTML e modifique os valores dos
+              campos.
+            </p>
+          </div>
+
+          <div class="duas-colunas">
+            <div class="card">
+              <h3>Área de teste</h3>
+
+              <label for="entradaConteudo">Digite um texto:</label>
+
+              <input
+                type="text"
+                class="campo"
+                id="entradaConteudo"
+                placeholder="Escreva aqui..."
+              />
+
+              <div class="botoes">
+                <button type="button" class="btn btn-principal" id="btnText">
+                  Testar .text()
+                </button>
+
+                <button type="button" class="btn" id="btnHtml">
+                  Testar .html()
+                </button>
+
+                <button type="button" class="btn" id="btnVal">
+                  Testar .val()
+                </button>
+              </div>
+
+              <div class="demonstracao">
+                <span class="rotulo">RESULTADO</span>
+
+                <div id="conteudoAlvo">O conteúdo será alterado aqui.</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Entenda os métodos</h3>
+
+              <div class="demonstracao">
+                <h3>.text()</h3>
+                <p>Trabalha com o texto de um elemento.</p>
+              </div>
+
+              <div class="demonstracao">
+                <h3>.html()</h3>
+                <p>Permite ler ou inserir conteúdo HTML.</p>
+              </div>
+
+              <div class="demonstracao">
+                <h3>.val()</h3>
+                <p>Lê ou altera o valor de um campo de formulário.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CSS E CLASSES -->
+
+      <section id="estilos">
+        <div class="container">
+          <div class="secao-topo">
+            <div class="mini-titulo">05 / CSS E CLASSES</div>
+            <h2>Transformando o <span class="titulo-azul">visual</span></h2>
+            <p class="descricao">
+              Explore mudanças de cor e manipulação de classes CSS.
+            </p>
+          </div>
+
+          <div class="duas-colunas">
+            <div class="card">
+              <h3>Área de teste</h3>
+
+              <div class="demonstracao">
+                <div id="caixaEstilo" class="caixa-demo">
+                  Modifique meu estilo usando jQuery!
+                </div>
+              </div>
+
+              <div class="botoes">
+                <button type="button" class="btn btn-principal" id="btnCor">
+                  Mudar cor
+                </button>
+
+                <button type="button" class="btn" id="btnClasseCSS">
+                  Alternar classe
+                </button>
+
+                <button type="button" class="btn" id="btnAdicionarClasse">
+                  Adicionar classe
+                </button>
+
+                <button type="button" class="btn" id="btnRemoverClasse">
+                  Remover classe
+                </button>
+
+                <button type="button" class="btn" id="btnResetCSS">
+                  Reiniciar
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Classes disponíveis</h3>
+
+              <div class="demonstracao">
+                <span class="rotulo">.realce</span>
+                <p>Aplica um fundo azul-claro e texto escuro.</p>
+              </div>
+
+              <div class="demonstracao">
+                <span class="rotulo">.estilo-ativo</span>
+                <p>Altera o fundo, o texto e o arredondamento.</p>
+              </div>
+
+              <p class="resultado">
+                Você pode usar addClass(), removeClass() e toggleClass() para
+                testar essas classes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EFEITOS -->
+
+      <section id="efeitos">
+        <div class="container">
+          <div class="secao-topo">
+            <div class="mini-titulo">06 / EFEITOS</div>
+            <h2>Adicione <span class="titulo-azul">movimento</span></h2>
+            <p class="descricao">
+              Prepare os elementos para testar efeitos de visibilidade,
+              transições e animações com jQuery.
+            </p>
+          </div>
+
+          <div class="grade">
+            <div class="card">
+              <div class="icone">◉</div>
+              <h3>Show, hide e toggle</h3>
+
+              <div class="demonstracao">
+                <div id="caixaVisibilidade" class="caixa-demo">
+                  Você pode me esconder e mostrar!
+                </div>
+              </div>
+
+              <div class="botoes">
+                <button type="button" class="btn" id="btnOcultar">
+                  Esconder
+                </button>
+
+                <button type="button" class="btn" id="btnMostrar">
+                  Mostrar
+                </button>
+
+                <button type="button" class="btn btn-principal" id="btnToggle">
+                  Alternar
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="icone">◌</div>
+              <h3>Fade</h3>
+              <p>
+                Prepare uma caixa para testar aparições e desaparecimentos
+                graduais.
+              </p>
+
+              <div class="demonstracao">
+                <div id="caixaFade" class="caixa-demo">Efeito fade!</div>
+              </div>
+
+              <div class="botoes">
+                <button type="button" class="btn btn-principal" id="btnFade">
+                  Alternar fade
+                </button>
+
+                <button type="button" class="btn" id="btnFadeIn">
+                  Aparecer
+                </button>
+
+                <button type="button" class="btn" id="btnFadeOut">
+                  Desaparecer
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="icone">↕</div>
+              <h3>Slide</h3>
+              <p>Teste a abertura e o fechamento de um conteúdo.</p>
+
+              <div class="demonstracao">
+                <button type="button" class="btn btn-principal" id="btnSlide">
+                  Alternar slide
+                </button>
+
+                <div id="caixaSlide" class="caixa-demo">
+                  Conteúdo revelado pelo efeito slide!
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="icone">➜</div>
+              <h3>Animate</h3>
+              <p>Prepare um elemento para experimentar animações.</p>
+
+              <div class="pista">
+                <div id="quadradoAnimado"></div>
+              </div>
+
+              <div class="botoes">
+                <button type="button" class="btn btn-principal" id="btnAnimar">
+                  Animar elemento
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOM -->
+
+      <section id="dom">
+        <div class="container">
+          <div class="secao-topo">
+            <div class="mini-titulo">07 / DOM</div>
+            <h2>
+              Adicionando e removendo <span class="titulo-azul">elementos</span>
+            </h2>
+            <p class="descricao">
+              Prepare uma lista para praticar a criação, a inserção e a remoção
+              de elementos HTML.
+            </p>
+          </div>
+
+          <div class="duas-colunas">
+            <div class="card">
+              <h3>Minha lista</h3>
+              <p>Digite um item e use os botões para modificar a lista.</p>
+
+              <label for="novoItem">Nome do item:</label>
+
+              <input
+                type="text"
+                class="campo"
+                id="novoItem"
+                placeholder="Digite uma tarefa..."
+              />
+
+              <div class="botoes">
+                <button
+                  type="button"
+                  class="btn btn-principal"
+                  id="btnAdicionar"
+                >
+                  + Adicionar item
+                </button>
+              </div>
+
+              <ul class="lista" id="listaItens">
+                <li class="item-lista">
+                  <span>Aprender seletores</span>
+                  <button type="button" class="remover">Remover</button>
+                </li>
+
+                <li class="item-lista">
+                  <span>Testar eventos</span>
+                  <button type="button" class="remover">Remover</button>
+                </li>
+              </ul>
+
+              <p id="resultadoLista" class="resultado">Resultado da lista.</p>
+            </div>
+
+            <div class="card">
+              <h3>O que praticar?</h3>
+
+              <div class="demonstracao">
+                <h3>append()</h3>
+                <p>Adiciona conteúdo dentro de um elemento.</p>
+              </div>
+
+              <div class="demonstracao">
+                <h3>prepend()</h3>
+                <p>Insere conteúdo no início de um elemento.</p>
+              </div>
+
+              <div class="demonstracao">
+                <h3>remove()</h3>
+                <p>Remove um elemento da página.</p>
+              </div>
+
+              <div class="demonstracao">
+                <h3>empty()</h3>
+                <p>Remove os elementos filhos de um elemento.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAIS E FILHOS -->
+
+          <div class="duas-colunas" style="margin-top: 17px">
+            <div class="card">
+              <h3>Pais e filhos</h3>
+              <p>
+                Experimente selecionar elementos relacionados na estrutura HTML.
+              </p>
+
+              <div id="paiDemo" class="demonstracao">
+                <span class="rotulo">ELEMENTO PAI</span>
+
+                <div id="filhoDemo" class="caixa-demo">
+                  Sou um elemento filho.
+                </div>
+
+                <div class="caixa-demo filhoDemo2">Eu também sou filho.</div>
+              </div>
+
+              <div class="botoes">
+                <button type="button" class="btn" id="btnPai">
+                  Selecionar pai
+                </button>
+
+                <button type="button" class="btn" id="btnFilhos">
+                  Selecionar filhos
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Navegação pelo DOM</h3>
+
+              <div class="demonstracao">
+                <h3>parent()</h3>
+                <p>Seleciona o elemento pai do elemento escolhido.</p>
+              </div>
+
+              <div class="demonstracao">
+                <h3>children()</h3>
+                <p>Seleciona os filhos diretos do elemento.</p>
+              </div>
+
+              <div class="demonstracao">
+                <h3>find()</h3>
+                <p>Procura elementos descendentes dentro de outro elemento.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINAL -->
+
+      <section id="conclusao">
+        <div class="container">
+          <div class="card" style="text-align: center; padding: 40px 25px">
+            <div class="mini-titulo">08 / FINALIZANDO</div>
+
+            <h2>Agora é a sua <span class="titulo-azul">vez.</span></h2>
+
+            <p class="descricao" style="margin: auto">
+              Explore os elementos desta página, escreva seu próprio JavaScript
+              com jQuery e descubra novas possibilidades.
+            </p>
+
+            <div class="botoes" style="justify-content: center">
+              <a href="#inicio" class="btn btn-principal">
+                Voltar ao início ↑
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <strong>jQuery <span>LAB.</span></strong>
+        <br />
+        Laboratório interativo de aprendizagem.
+      </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
